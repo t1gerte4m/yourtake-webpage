@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThinkSuite Intelligence - Dark Theme Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0e0c;
+      --bg-subtle: #111613;
+      --bg-card: #131916;
+      --text: #e2e8e4;
+      --text-secondary: #8a9a8f;
+      --text-tertiary: #4e5c52;
+      --accent: #5a9e6f;
+      --accent-bright: #6db882;
+      --accent-light: rgba(90, 158, 111, 0.12);
+      --accent-dim: rgba(90, 158, 111, 0.06);
+      --chrome: #c0c5be;
+      --border: #1e2a22;
+      --border-hover: rgba(90, 158, 111, 0.25);
+      --sidebar-bg: #0d100e;
+      --sidebar-active: #141c17;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+      --radius: 6px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      padding: 32px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .sidebar-logo {
+      padding: 0 24px 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--accent-bright);
+    }
+
+    .sidebar-logo span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .nav-item {
+      display: block;
+      width: 100%;
+      padding: 10px 24px;
+      text-align: left;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--text);
+      background: var(--sidebar-active);
+    }
+
+    .nav-item.active {
+      color: var(--accent-bright);
+      font-weight: 500;
+      background: var(--sidebar-active);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .nav-item.sub {
+      padding-left: 40px;
+      font-size: 13px;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 24px;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 48px 64px 80px;
+      max-width: 900px;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 40px;
+      max-width: 600px;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    p.muted {
+      color: var(--text-secondary);
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--chrome);
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card-grid.cols-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hover);
+    }
+
+    .card .card-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent-bright);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .card h4 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    /* Callout */
+    .callout {
+      background: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* Spacers */
+    .spacer-sm { height: 16px; }
+    .spacer-md { height: 32px; }
+    .spacer-lg { height: 48px; }
+
+    /* Theme toggle */
+    .theme-badge {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      z-index: 100;
+    }
+
+    .theme-badge a {
+      color: var(--bg);
+      text-decoration: none;
+    }
+
+    .theme-badge a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body x-data="{ active: 'overview' }">
+
+  <div class="theme-badge">DARK PREVIEW &mdash; <a href="index.html">Switch to Light</a></div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <h1>ThinkSuite</h1>
+        <span>Intelligence Concept</span>
+      </div>
+
+      <button class="nav-item active">Overview</button>
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">The Problem</button>
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">The Concept</button>
+      <button class="nav-item sub" style="opacity: 0.4; cursor: default;">Intelligence</button>
+      <button class="nav-item sub" style="opacity: 0.4; cursor: default;">Connection</button>
+      <button class="nav-item sub" style="opacity: 0.4; cursor: default;">Participation</button>
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">The Dossier</button>
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">The Flywheel</button>
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">Why Defensible</button>
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">Business Case</button>
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">What We Need</button>
+      <button class="nav-item" style="opacity: 0.4; cursor: default;">What's Next</button>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <div class="section active">
+        <div class="label">ThinkSuite Intelligence</div>
+        <h2>A Private Intelligence Network for Family Offices</h2>
+        <p class="subtitle">
+          Not a newsletter. A system that gathers proprietary insights from your network,
+          delivers them through a personalized lens, and creates connections between
+          family offices around shared interests.
+        </p>
+
+        <div class="callout">
+          <p><strong>You've built something rare:</strong> trusted access to an exclusive community. This concept turns that trust into a scalable product that solves all three problems you've identified&mdash;simultaneously.</p>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <div class="card-grid cols-3">
+          <div class="card">
+            <div class="card-number">1</div>
+            <h4>Intelligence</h4>
+            <p>Proprietary insights, personalized to each reader's world</p>
+          </div>
+          <div class="card">
+            <div class="card-number">2</div>
+            <h4>Connection</h4>
+            <p>Content-driven matchmaking between family offices</p>
+          </div>
+          <div class="card">
+            <div class="card-number">3</div>
+            <h4>Participation</h4>
+            <p>Readers contribute back, making each edition richer</p>
+          </div>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <p class="muted">At its core, your events give family offices something they can't get anywhere else: the confidence that comes from being in a room with peers who face the same challenges. <strong>You're selling confidence.</strong> This product extends that same feeling&mdash;that reassurance, that validation, that "I'm not alone in this"&mdash;beyond the events and into a continuous experience. It's ThinkSuite's first AI-powered product: <strong>ThinkSuite Intelligence.</strong></p>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

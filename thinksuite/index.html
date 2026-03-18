@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThinkSuite Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-subtle: #f8f8f7;
+      --bg-card: #fafaf9;
+      --text: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #999999;
+      --accent: #b8860b;
+      --accent-light: #f5f0e0;
+      --border: #e8e8e6;
+      --sidebar-bg: #fafaf9;
+      --sidebar-active: #f0efe8;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --radius: 8px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      padding: 32px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .sidebar-logo {
+      padding: 0 24px 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo h1 {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .sidebar-logo span {
+      display: block;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-item {
+      display: block;
+      width: 100%;
+      padding: 10px 24px;
+      text-align: left;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      color: var(--text);
+      background: var(--sidebar-active);
+    }
+
+    .nav-item.active {
+      color: var(--text);
+      font-weight: 500;
+      background: var(--sidebar-active);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .nav-item.sub {
+      padding-left: 40px;
+      font-size: 13px;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 12px 24px;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 48px 64px 80px;
+      max-width: 900px;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography */
+    h2 {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 600px;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    p.muted {
+      color: var(--text-secondary);
+    }
+
+    .highlight {
+      background: var(--accent-light);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card-grid.cols-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card-grid.cols-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .card .card-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .card h4 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    /* Expandable cards */
+    .expandable {
+      cursor: pointer;
+    }
+
+    .expandable .expand-icon {
+      display: inline-block;
+      transition: transform 0.2s ease;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-left: 8px;
+    }
+
+    .expandable.open .expand-icon {
+      transform: rotate(90deg);
+    }
+
+    .expand-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+      opacity: 0;
+    }
+
+    .expand-content.open {
+      max-height: 800px;
+      opacity: 1;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .expand-content p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Callout */
+    .callout {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      margin-bottom: 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* Flywheel diagram */
+    .flywheel-container {
+      display: flex;
+      justify-content: center;
+      margin: 40px 0;
+    }
+
+    .flywheel {
+      position: relative;
+      width: 420px;
+      height: 420px;
+    }
+
+    .flywheel-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      background: var(--accent-light);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      z-index: 2;
+    }
+
+    .flywheel-node {
+      position: absolute;
+      width: 130px;
+      padding: 14px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+      z-index: 2;
+      transition: all 0.4s ease;
+    }
+
+    .flywheel-node.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(184, 134, 11, 0.25);
+      transform: translateX(-50%) scale(1.06);
+    }
+    .flywheel-node.n2.highlight { transform: translateY(-50%) scale(1.06); }
+    .flywheel-node.n3.highlight { transform: translateX(-50%) scale(1.06); }
+    .flywheel-node.n4.highlight { transform: translateY(-50%) scale(1.06); }
+
+    .flywheel-node.n1 { top: 0; left: 50%; transform: translateX(-50%); }
+    .flywheel-node.n2 { top: 50%; right: 0; transform: translateY(-50%); }
+    .flywheel-node.n3 { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .flywheel-node.n4 { top: 50%; left: 0; transform: translateY(-50%); }
+
+    .flywheel-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      border: 2px dashed var(--border);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    /* SVG arrows */
+    .flywheel-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .flywheel-arrow-path {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 2;
+      transition: stroke 0.4s ease, opacity 0.4s ease;
+    }
+
+    .flywheel-arrow-path.highlight {
+      stroke: var(--accent);
+    }
+
+    .flywheel-arrowhead {
+      fill: var(--border);
+      transition: fill 0.4s ease;
+    }
+
+    .flywheel-arrowhead.highlight {
+      fill: var(--accent);
+    }
+
+
+    /* Dossier mockup */
+    .dossier-mockup {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      margin: 32px 0;
+      max-width: 560px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .dossier-mockup .dossier-header {
+      border-bottom: 2px solid var(--text);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .dossier-mockup .dossier-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .dossier-mockup .dossier-edition {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dossier-mockup .dossier-section {
+      margin-bottom: 24px;
+    }
+
+    .dossier-mockup .dossier-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .dossier-mockup .dossier-section p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .dossier-mockup .dossier-reactions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .dossier-mockup .reaction-btn {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .dossier-mockup .reaction-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* Pillar grid */
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .pillar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .pillar-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-light);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    /* Question cards */
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 12px;
+    }
+
+    .question-card .q-number {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .question-card h4 {
+      margin-bottom: 6px;
+    }
+
+    .question-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* Timeline */
+    .timeline {
+      margin: 24px 0;
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 24px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+
+    .timeline-item h4 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* Smart Brevity mockup */
+    .brevity-mockup {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 24px 0;
+      max-width: 560px;
+    }
+
+    .brevity-layer {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brevity-layer:last-child {
+      border-bottom: none;
+    }
+
+    .brevity-layer .layer-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .brevity-layer .layer-label.insight { color: var(--accent); }
+    .brevity-layer .layer-label.matters { color: #2563eb; }
+    .brevity-layer .layer-label.deeper { color: var(--text-tertiary); }
+    .brevity-layer .layer-label.connect { color: #059669; }
+
+    .brevity-layer p {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    /* Spacers */
+    .spacer-sm { height: 16px; }
+    .spacer-md { height: 32px; }
+    .spacer-lg { height: 48px; }
+  </style>
+</head>
+<body x-data="{ active: 'overview', expandedCards: {} }" x-effect="active; $nextTick(() => window.scrollTo(0, 0))" >
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <h1>ThinkSuite</h1>
+        <span>Intelligence Concept</span>
+      </div>
+
+      <button class="nav-item" :class="{ active: active === 'overview' }" @click="active = 'overview'">Overview</button>
+      <button class="nav-item" :class="{ active: active === 'problem' }" @click="active = 'problem'">The Problem</button>
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-item" :class="{ active: active === 'concept' }" @click="active = 'concept'">The Concept</button>
+      <button class="nav-item sub" :class="{ active: active === 'intelligence' }" @click="active = 'intelligence'">Intelligence</button>
+      <button class="nav-item sub" :class="{ active: active === 'connection' }" @click="active = 'connection'">Connection</button>
+      <button class="nav-item sub" :class="{ active: active === 'participation' }" @click="active = 'participation'">Participation</button>
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-item" :class="{ active: active === 'dossier' }" @click="active = 'dossier'">The Dossier</button>
+      <button class="nav-item" :class="{ active: active === 'flywheel' }" @click="active = 'flywheel'">The Flywheel</button>
+      <button class="nav-item" :class="{ active: active === 'defense' }" @click="active = 'defense'">Why Defensible</button>
+      <button class="nav-item" :class="{ active: active === 'business' }" @click="active = 'business'">Business Case</button>
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-item" :class="{ active: active === 'input' }" @click="active = 'input'">What We Need</button>
+      <button class="nav-item" :class="{ active: active === 'next' }" @click="active = 'next'">What's Next</button>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <div class="section" :class="{ active: active === 'overview' }">
+        <div class="label">ThinkSuite Intelligence</div>
+        <h2>A Private Intelligence Network for Family Offices</h2>
+        <p class="subtitle">
+          A system that gathers rarefied insights from your network,
+          delivers them through a personalized lens, and creates connections between
+          family offices around shared interests.
+        </p>
+
+        <div class="callout">
+          <p><strong>You've built something rare:</strong> trusted access to an exclusive community. This concept turns that trust into a scalable product that solves all three problems you've identified, simultaneously.</p>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <div class="card-grid cols-3">
+          <div class="card">
+            <div class="card-number">1</div>
+            <h4>Intelligence</h4>
+            <p>Rarefied insights, filtered and framed for each reader's world</p>
+          </div>
+          <div class="card">
+            <div class="card-number">2</div>
+            <h4>Connection</h4>
+            <p>Content-driven matchmaking between family offices</p>
+          </div>
+          <div class="card">
+            <div class="card-number">3</div>
+            <h4>Participation</h4>
+            <p>Readers contribute back, making each edition richer</p>
+          </div>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <p class="muted">At its core, your events give family offices something they can't get anywhere else: the confidence that comes from being in a room with peers who face the same challenges. <strong>You're selling confidence.</strong> This product extends that same feeling (that reassurance, that validation, that "I'm not alone in this") beyond the events and into a continuous experience. It's ThinkSuite's first AI-powered product: <strong>ThinkSuite Intelligence.</strong></p>
+      </div>
+
+      <!-- THE PROBLEM -->
+      <div class="section" :class="{ active: active === 'problem' }">
+        <div class="label">Starting Point</div>
+        <h2>The Problem</h2>
+        <p class="subtitle">
+          Three challenges your family office community faces. You're already solving the first two.
+          The third is the opportunity.
+        </p>
+
+        <div class="callout">
+          <p>Here's what's interesting: <strong>solving problem 3 can amplify your ability to solve problems 1 and 2.</strong> Content becomes the vehicle for both intelligence and connection.</p>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="card-number">1</div>
+          <h4>Safe Spaces</h4>
+          <p>Family offices need to meet peers without vendors and service providers diluting the room. Existing groups are "very diluted, filled with service providers or funds trying to sell you things." You've built trusted, vendor-free events, and you say no to every vendor who asks to get in.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="card-number">2</div>
+          <h4>The Right Match</h4>
+          <p>Finding the right family office one-on-one is almost impossible organically. With ~10,000 family offices globally and a tiny number of decision makers, the math is extreme. Your personal introductions, matching by sector, interests, and family structure, are "super high value."</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <div class="card-number">3</div>
+          <h4>Exceptional Content</h4>
+          <p>Family offices want curated, high-value content, but right now that only happens at events, not in written form. This is on your roadmap but hasn't happened yet. <strong>This is the gap.</strong></p>
+        </div>
+
+        <h3>You're Closer Than You Think</h3>
+        <p class="muted">You already have most of the building blocks. This isn't starting from scratch; it's activating what you've built.</p>
+
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>2-3 Events Per Month</h4>
+            <p>Your data collection infrastructure already exists. Every event is a chance to gather rarefied insights through natural conversation. No new systems required.</p>
+          </div>
+          <div class="card">
+            <h4>Trusted Relationships</h4>
+            <p>You've spent years earning the trust of deeply private families. That trust is the distribution channel. When you send something, they open it.</p>
+          </div>
+          <div class="card">
+            <h4>Personal Knowledge of Every FO</h4>
+            <p>You know who's in real estate, who cares about succession, who has two kids. That's the initial personalization engine: it lives in your head and your notes today.</p>
+          </div>
+          <div class="card">
+            <h4>Existing Membership Model</h4>
+            <p>Members already pay because they trust the value you deliver. This product adds a tangible, recurring deliverable that reinforces that value every month.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE CONCEPT (overview) -->
+      <div class="section" :class="{ active: active === 'concept' }">
+        <div class="label">The Product</div>
+        <h2>The Concept</h2>
+        <p class="subtitle">
+          Three layers working together to create a private intelligence network
+          that delivers unique value and deepens connections.
+        </p>
+
+        <div class="card expandable" @click="expandedCards.intel = !expandedCards.intel" :class="{ open: expandedCards.intel }" style="margin-bottom: 16px; cursor: pointer;">
+          <div class="card-number">1</div>
+          <h4>Intelligence <span class="expand-icon">&#9654;</span></h4>
+          <p>Rarefied insights from the network, personalized to each reader's world.</p>
+          <div class="expand-content" :class="{ open: expandedCards.intel }">
+            <p style="margin-bottom: 16px;">Deliver insights that don't exist anywhere else. Not curated news. Anyone can do that. <strong>Rarefied perspectives gathered directly from family offices</strong>, shared anonymously, communicated in a format that takes 3 minutes to scan.</p>
+            <p>Each reader's briefing is curated to their world. A real estate family only sees insights relevant to real estate. And each insight is framed so they immediately understand why it matters to them and what to do about it. No translation required. <strong>This is where AI creates genuine value.</strong></p>
+          </div>
+        </div>
+
+        <div class="card expandable" @click="expandedCards.conn = !expandedCards.conn" :class="{ open: expandedCards.conn }" style="margin-bottom: 16px; cursor: pointer;">
+          <div class="card-number">2</div>
+          <h4>Connection <span class="expand-icon">&#9654;</span></h4>
+          <p>The intelligence product becomes a matchmaking engine.</p>
+          <div class="expand-content" :class="{ open: expandedCards.conn }">
+            <p>When a reader finds an insight compelling, they can signal interest in the topic. ThinkSuite brokers connections (small group discussions, 1-on-1 introductions) around shared interests the content reveals.</p>
+            <p>Over time, even how someone <em>engages</em> with the content helps identify non-obvious connections. This extends your matchmaking ability far beyond personal conversations alone.</p>
+          </div>
+        </div>
+
+        <div class="card expandable" @click="expandedCards.part = !expandedCards.part" :class="{ open: expandedCards.part }" style="margin-bottom: 16px; cursor: pointer;">
+          <div class="card-number">3</div>
+          <h4>Participation <span class="expand-icon">&#9654;</span></h4>
+          <p>Readers contribute back. The product improves with every edition.</p>
+          <div class="expand-content" :class="{ open: expandedCards.part }">
+            <p>Each edition includes a provocation (a challenging question or tension between perspectives) and a simple way to respond. Responses feed into the next edition.</p>
+            <p>Over time, this builds a longitudinal dataset of family office sentiment. <strong>Readers become contributors, contributors become more connected, and the product gets better with every edition.</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTELLIGENCE (detail) -->
+      <div class="section" :class="{ active: active === 'intelligence' }">
+        <div class="label">Layer 1</div>
+        <h2>Intelligence</h2>
+        <p class="subtitle">
+          Deliver insights that don't exist anywhere else, in a format that respects
+          how busy these people are.
+        </p>
+
+        <h3>The Data Moat</h3>
+        <p>There are two kinds of content you could create:</p>
+
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Low Value</h4>
+            <p>Curating publicly available information through a family office lens. Anyone can do this. It's a filter on existing content.</p>
+          </div>
+          <div class="card" style="border-color: var(--accent);">
+            <h4 style="color: var(--accent);">High Value</h4>
+            <p>Gathering <strong>rarefied insights directly from family offices</strong> and sharing them anonymously. This data doesn't exist anywhere else. No search can find it.</p>
+          </div>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <h3>Smart Brevity Format</h3>
+        <p class="muted">Each insight follows a layered structure. Scan in 3 minutes, go deep if you want.</p>
+
+        <div class="brevity-mockup">
+          <div class="brevity-layer">
+            <div class="layer-label insight">The Insight</div>
+            <p><strong>Family offices are quietly shifting 15-20% of portfolios into direct private credit deals, bypassing traditional fund structures.</strong></p>
+          </div>
+          <div class="brevity-layer">
+            <div class="layer-label matters">Why This Matters to You</div>
+            <p style="color: var(--text-secondary); font-style: italic;">Personalized per reader. A real estate family sees: "This trend is creating competition for the same deal flow you're seeing in commercial real estate debt." A healthcare family gets different framing.</p>
+          </div>
+          <div class="brevity-layer">
+            <div class="layer-label deeper">Go Deeper</div>
+            <p style="color: var(--text-tertiary);">Full anonymous source context, data behind the insight. Reader self-selects this depth.</p>
+          </div>
+          <div class="brevity-layer">
+            <div class="layer-label connect">Connect</div>
+            <p style="color: #059669;">"Want to discuss this with peers who are seeing the same thing? Let us know."</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p>Not every insight goes to every reader. The briefing is filtered to what's relevant, then each insight is framed for that reader's world. Less noise, more signal. That's the core AI play.</p>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <div class="callout" style="background: #fef2f2; border-left-color: #b91c1c;">
+          <p style="color: #7f1d1d;"><strong>Protecting Trust: The Privacy Model</strong></p>
+          <p style="color: #991b1b; font-weight: 400; font-size: 14px; margin-top: 8px;">Your community is deeply private. Many of your members would be uncomfortable with even basic recording or data collection. The entire intelligence model is designed around this reality:</p>
+          <p style="color: #991b1b; font-weight: 400; font-size: 14px; margin-top: 8px;"><strong>Anonymous by default.</strong> No names, no identifying details, no attributable quotes, unless the contributor explicitly opts in.</p>
+          <p style="color: #991b1b; font-weight: 400; font-size: 14px; margin-top: 8px;"><strong>Consent is conversational.</strong> Data is gathered through natural conversation at events, not surveillance. You ask permission in person: "Can I share this insight with the network anonymously?" No recording, no transcription. Just your notes.</p>
+          <p style="color: #991b1b; font-weight: 400; font-size: 14px; margin-top: 8px;"><strong>Connection requests flow through you.</strong> A reader never gets direct access to a contributor. You broker every introduction, just like you do today. The contributor can always say no.</p>
+          <p style="color: #991b1b; font-weight: 400; font-size: 14px; margin-top: 8px; margin-bottom: 0;"><strong>The trust you've built is the product.</strong> Nothing in this system works if it compromises that trust. Every design decision starts here.</p>
+        </div>
+      </div>
+
+      <!-- CONNECTION (detail) -->
+      <div class="section" :class="{ active: active === 'connection' }">
+        <div class="label">Layer 2</div>
+        <h2>Connection</h2>
+        <p class="subtitle">
+          The intelligence product doubles as a matchmaking engine,
+          extending your personal touch at scale.
+        </p>
+
+        <h3>How It Works</h3>
+        <p>Multiple mechanisms, ranging from zero reader effort to minimal effort:</p>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <h4>Passive Matching (Zero Effort)</h4>
+          <p>Track engagement patterns silently. Over time, cluster readers by interest. Surface match suggestions to you: "These 4 FOs all engage deeply with governance content. Consider introducing them." The reader did nothing. Their behavior revealed their interests.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <h4>Profile-Based Pre-Matching</h4>
+          <p>You already know each family office. When new content is relevant to a specific FO's situation, reach out proactively: "I read something that made me think of you. Want me to connect you with the person behind it?" To the reader, it looks like your legendary personal touch. In reality, it's data-assisted.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <h4>One-Tap Reactions</h4>
+          <p>Simple buttons on each section: "Spot on" / "Not what I'm seeing" / "Want to discuss." One tap. Over time, builds a detailed interest graph. Two readers who consistently react to the same content are strong match candidates.</p>
+        </div>
+
+        <div class="callout">
+          <p>The most powerful matchmaking happens when readers don't realize they're being matched. It feels like you always know exactly who should meet whom. The AI is invisible, amplifying your existing superpower.</p>
+        </div>
+      </div>
+
+      <!-- PARTICIPATION (detail) -->
+      <div class="section" :class="{ active: active === 'participation' }">
+        <div class="label">Layer 3</div>
+        <h2>Participation</h2>
+        <p class="subtitle">
+          Turn passive readers into active contributors without it feeling like work.
+          Each response makes the next edition better.
+        </p>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <h4>The One-Question Close</h4>
+          <p>Every edition ends with ONE provocative question. Not a survey. Just one question designed to be compelling enough that people <em>want</em> to answer. Reply to the email. That's it.</p>
+          <div class="spacer-sm"></div>
+          <p style="font-style: italic; color: var(--text-tertiary); font-size: 13px;">
+            "What's the biggest mistake your family office made this year?"<br>
+            "If you could only make one investment in 2026, what would it be?"<br>
+            "What keeps you up at night about the next generation?"
+          </p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <h4>The Provocation</h4>
+          <p>Present a contrarian take or unresolved tension. People who disagree, or strongly agree, are naturally motivated to respond. Richer data than a question because they're responding to a <em>position</em>.</p>
+          <div class="spacer-sm"></div>
+          <p style="font-style: italic; color: var(--text-tertiary); font-size: 13px;">"One of our members believes family offices should be actively investing in AI companies right now. Another thinks it's a bubble. Where do you stand?"</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <h4>Friction-Free Reactions</h4>
+          <p>Three buttons at the bottom of each section. One tap. No text required. Aggregated reactions create a real-time sentiment layer for the next edition: "73% of our network agrees with this take."</p>
+          <div class="spacer-sm"></div>
+          <div style="display: flex; gap: 8px;">
+            <span class="reaction-btn" style="padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--text-secondary);">Spot on</span>
+            <span class="reaction-btn" style="padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--text-secondary);">Not what I'm seeing</span>
+            <span class="reaction-btn" style="padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--text-secondary);">Want to discuss</span>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p>Over 6-12 months, this builds a longitudinal dataset of family office sentiment. That dataset becomes the foundation for dossiers, matchmaking, and potentially a premium benchmark product.</p>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <h3>Why Interviews First, Surveys Later</h3>
+        <p class="muted">The instinct is to send a survey right away; it's fast and scales easily. But for this audience, that's the wrong starting point.</p>
+
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Start: In-Person Interviews</h4>
+            <p><strong>You already have the venue.</strong> Your events are the data collection system. Through natural conversation, you learn what people actually think, not what they'd check on a form.</p>
+            <div class="spacer-sm"></div>
+            <p>Interviews reveal what questions you should eventually ask at scale. They surface topics you wouldn't have thought to include in a survey. And they deepen the relationship. People feel heard, not processed.</p>
+          </div>
+          <div class="card">
+            <h4>Later: Targeted Surveys</h4>
+            <p><strong>Surveys work once the newsletter proves value.</strong> When members have seen how their peers' insights show up in the product, they'll understand what they're contributing to.</p>
+            <div class="spacer-sm"></div>
+            <p>Position it as: "Help shape the next edition. Your peers are reading this." Now the survey isn't a cold ask. It's participation in something they've already seen work. Response rates will be dramatically higher.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE DOSSIER -->
+      <div class="section" :class="{ active: active === 'dossier' }">
+        <div class="label">Physical Product</div>
+        <h2>The Dossier</h2>
+        <p class="subtitle">
+          A quarterly, premium printed deep dive. It arrives in the mail.
+          It sits on a desk. It signals membership in something exclusive.
+        </p>
+
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Why Physical?</h4>
+            <p><strong>Premium signaling.</strong> A printed briefing on heavy stock paper says "you are part of something exclusive" in a way email never can.</p>
+            <div class="spacer-sm"></div>
+            <p><strong>Privacy.</strong> Physical is harder to leak than digital. You can't screenshot and forward it to 50 people.</p>
+            <div class="spacer-sm"></div>
+            <p><strong>Attention.</strong> Something in the mail commands a different quality of attention than one of 200 emails.</p>
+          </div>
+          <div class="card">
+            <h4>Specs</h4>
+            <p>Heavy stock paper, minimalist typography. Think Berkshire Hathaway annual report, not glossy magazine.</p>
+            <div class="spacer-sm"></div>
+            <p>Numbered editions: "Edition 1 of 85." Reinforces scarcity.</p>
+            <div class="spacer-sm"></div>
+            <p>No ads, no sponsors, no external logos. Custom ThinkSuite mark on envelope.</p>
+            <div class="spacer-sm"></div>
+            <p>QR code links to digital companion for reactions and connection requests.</p>
+          </div>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <h3>What It Might Feel Like</h3>
+
+        <div class="dossier-mockup">
+          <div class="dossier-header">
+            <span class="dossier-title">ThinkSuite Intelligence</span>
+            <span class="dossier-edition">Edition 1 of 85</span>
+          </div>
+
+          <div class="dossier-section">
+            <div class="dossier-section-label">The Insight</div>
+            <p><strong>Family offices with next-generation involvement in investment decisions report 2.3x higher satisfaction with their governance structures.</strong></p>
+          </div>
+
+          <div class="dossier-section">
+            <div class="dossier-section-label">Why This Matters</div>
+            <p>The data suggests that succession isn't just about wealth transfer; it's about decision-making integration. Families that bring the next generation into the investment process early see compounding benefits in trust, alignment, and institutional knowledge.</p>
+          </div>
+
+          <div class="dossier-section">
+            <div class="dossier-section-label">From the Network</div>
+            <p>"We started including our eldest in quarterly investment reviews three years ago. The biggest surprise wasn't their ideas; it was how much it forced us to articulate our own investment thesis clearly for the first time."<br><em>- Anonymous, multi-generational family office, Northeast US</em></p>
+          </div>
+
+          <div class="dossier-reactions">
+            <button class="reaction-btn">Spot on</button>
+            <button class="reaction-btn">Not what I'm seeing</button>
+            <button class="reaction-btn">Want to discuss</button>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p>The digital briefing keeps engagement warm between editions. The Dossier creates peaks of activity: new data, new connections, new contributors.</p>
+        </div>
+      </div>
+
+      <!-- THE FLYWHEEL -->
+      <div class="section" :class="{ active: active === 'flywheel' }">
+        <div class="label">Growth Engine</div>
+        <h2>The Flywheel</h2>
+        <p class="subtitle">
+          Each layer reinforces the others. The product gets better with every
+          edition and every participant.
+        </p>
+
+        <div class="flywheel-container">
+          <div class="flywheel" x-data="flywheel()">
+            <div class="flywheel-ring"></div>
+            <div class="flywheel-center">Growing<br>Data Moat</div>
+
+            <svg class="flywheel-svg" viewBox="0 0 420 420">
+              <!-- Curved arrows: n1→n2, n2→n3, n3→n4, n4→n1 -->
+              <defs>
+                <marker id="ah0" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto">
+                  <polygon points="0 0, 12 4, 0 8" class="flywheel-arrowhead" :class="{ highlight: step === 0 }" />
+                </marker>
+                <marker id="ah1" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto">
+                  <polygon points="0 0, 12 4, 0 8" class="flywheel-arrowhead" :class="{ highlight: step === 1 }" />
+                </marker>
+                <marker id="ah2" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto">
+                  <polygon points="0 0, 12 4, 0 8" class="flywheel-arrowhead" :class="{ highlight: step === 2 }" />
+                </marker>
+                <marker id="ah3" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto">
+                  <polygon points="0 0, 12 4, 0 8" class="flywheel-arrowhead" :class="{ highlight: step === 3 }" />
+                </marker>
+              </defs>
+
+              <!-- Arcs follow dashed ring (r=150, center=210,210), endpoints 30° from each node to clear boxes -->
+              <!-- Top → Right -->
+              <path d="M 285 80 A 150 150 0 0 1 340 135" class="flywheel-arrow-path" :class="{ highlight: step === 0 }" marker-end="url(#ah0)" />
+              <!-- Right → Bottom -->
+              <path d="M 340 285 A 150 150 0 0 1 285 340" class="flywheel-arrow-path" :class="{ highlight: step === 1 }" marker-end="url(#ah1)" />
+              <!-- Bottom → Left -->
+              <path d="M 135 340 A 150 150 0 0 1 80 285" class="flywheel-arrow-path" :class="{ highlight: step === 2 }" marker-end="url(#ah2)" />
+              <!-- Left → Top -->
+              <path d="M 80 135 A 150 150 0 0 1 135 80" class="flywheel-arrow-path" :class="{ highlight: step === 3 }" marker-end="url(#ah3)" />
+
+            </svg>
+
+            <div class="flywheel-node n1" :class="{ highlight: step === 0 }">Content<br>Published</div>
+            <div class="flywheel-node n2" :class="{ highlight: step === 1 }">Readers<br>Engage</div>
+            <div class="flywheel-node n3" :class="{ highlight: step === 2 }">Data &amp;<br>Reactions<br>Captured</div>
+            <div class="flywheel-node n4" :class="{ highlight: step === 3 }">Richer<br>Insights<br>Created</div>
+          </div>
+        </div>
+
+        <script>
+          function flywheel() {
+            return {
+              step: 0,
+              interval: null,
+              init() {
+                this.interval = setInterval(() => {
+                  this.step = (this.step + 1) % 4;
+                }, 1800);
+              },
+              destroy() {
+                if (this.interval) clearInterval(this.interval);
+              }
+            }
+          }
+        </script>
+
+        <div class="spacer-md"></div>
+
+        <h3>Why It Compounds</h3>
+
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>More Subscribers</h4>
+            <p>More diverse perspectives flowing in. The "Pulse" data gets richer. Content quality rises.</p>
+          </div>
+          <div class="card">
+            <h4>More Contributors</h4>
+            <p>Each contributor makes the product better for all readers. Unique insights attract more subscribers.</p>
+          </div>
+          <div class="card">
+            <h4>More Connection Requests</h4>
+            <p>More successful matches build trust. More trust means more willingness to share. More sharing means better data.</p>
+          </div>
+          <div class="card">
+            <h4>More Editions</h4>
+            <p>Longitudinal sentiment data accumulates. Trend analysis becomes possible. The dataset becomes priceless.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p>A competitor would need to build the trust network from scratch. You're already inside. Every edition widens the gap.</p>
+        </div>
+      </div>
+
+      <!-- WHY DEFENSIBLE -->
+      <div class="section" :class="{ active: active === 'defense' }">
+        <div class="label">Strategic Position</div>
+        <h2>Why This Is Defensible</h2>
+        <p class="subtitle">
+          Four pillars that make this extremely difficult to replicate.
+        </p>
+
+        <div class="pillar-grid">
+          <div class="pillar">
+            <div class="pillar-icon">&#9919;</div>
+            <h4>Proprietary Data</h4>
+            <p class="muted" style="font-size: 14px;">The intelligence comes from trusted relationships that took years to build. This data doesn't exist in any database, API, or public source. You can't buy it.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">&#8635;</div>
+            <h4>Network Effects</h4>
+            <p class="muted" style="font-size: 14px;">The product gets better with more participants. More readers means more reactions, more contributors, richer insights. Each edition compounds the value.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">&#9878;</div>
+            <h4>Trust Is the Moat</h4>
+            <p class="muted" style="font-size: 14px;">No competitor can shortcut the years of saying "no" to vendors, protecting privacy, and earning confidence. Family offices are black boxes. You're already inside.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">&#10022;</div>
+            <h4>Extends, Not Replaces</h4>
+            <p class="muted" style="font-size: 14px;">AI and data make your personal touch scale. It doesn't replace your judgment; it makes you look like you have superhuman intuition about who should meet whom.</p>
+          </div>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <h3>vs. Existing Alternatives</h3>
+
+        <div class="card" style="margin-bottom: 16px;">
+          <p><strong>Generic financial news:</strong> Not proprietary. Anyone can read it.</p>
+          <p><strong>Vendor-sponsored "thought leadership":</strong> Biased. Erodes trust.</p>
+          <p><strong>Academic/consultant research:</strong> Not peer-sourced, not timely.</p>
+          <p style="margin-bottom: 0;"><strong>None of them</strong> offer the "reach back and meet the source" mechanism.</p>
+        </div>
+      </div>
+
+      <!-- BUSINESS CASE -->
+      <div class="section" :class="{ active: active === 'business' }">
+        <div class="label">Revenue &amp; Growth</div>
+        <h2>Business Case</h2>
+        <p class="subtitle">
+          How this product strengthens your existing business and creates new revenue opportunities.
+        </p>
+
+        <h3>Reinforces Your Core Business</h3>
+        <div class="card" style="margin-bottom: 24px;">
+          <p><strong>Justifies premium membership pricing.</strong> Today, members pay for access to events and your network. Adding a tangible, recurring intelligence product gives them something they can point to: "This alone is worth the membership." It makes the value concrete and harder to walk away from.</p>
+          <div class="spacer-sm"></div>
+          <p><strong>Drives event attendance.</strong> The newsletter previews topics and surfaces questions that make people want to show up in person. Readers who engage with content about succession planning are primed to attend the next event where that topic comes up.</p>
+          <div class="spacer-sm"></div>
+          <p><strong>Expands your reach beyond geography.</strong> Events are local. The intelligence product reaches family offices globally. A family office in Singapore who can't attend a New York breakfast can still be part of the network, and they might fly in for the right event.</p>
+          <div class="spacer-sm"></div>
+          <p style="margin-bottom: 0;"><strong>Deepens retention.</strong> Members who receive personalized intelligence, contribute insights, and get introduced to peers through the product are deeply embedded. The switching cost isn't financial; it's relational. They'd lose access to a system that knows them.</p>
+        </div>
+
+        <h3>New Revenue Opportunities</h3>
+        <div class="card-grid cols-2">
+          <div class="card">
+            <h4>Premium Tier</h4>
+            <p>Personalized editions tailored to each FO's sector, geography, and interests. Priority connection requests. Early access to dossier content. A higher-priced membership level for members who want the full experience.</p>
+          </div>
+          <div class="card">
+            <h4>The Dossier (Physical)</h4>
+            <p>The quarterly printed deep dive could be priced separately or bundled into the premium tier. Its physical, limited-edition nature commands a premium that digital content alone can't.</p>
+          </div>
+          <div class="card">
+            <h4>Data Products (Long-Term)</h4>
+            <p>Over time, the aggregated, anonymized sentiment data becomes a research product. "What are family offices thinking about AI in 2026?" That data doesn't exist anywhere else. Institutions, academics, and advisors would pay for it.</p>
+          </div>
+          <div class="card">
+            <h4>Geographic Expansion</h4>
+            <p>The intelligence product is your entry point to markets where you don't yet have events. Start with the newsletter, build engagement, then launch events in those regions with a built-in audience.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p>The intelligence product isn't a cost center. It's a growth engine that makes every part of your existing business (events, memberships, introductions) more valuable.</p>
+        </div>
+      </div>
+
+      <!-- WHAT WE NEED -->
+      <div class="section" :class="{ active: active === 'input' }">
+        <div class="label">Your Input</div>
+        <h2>What We Need From You</h2>
+        <p class="subtitle">
+          Four questions to help us shape the first edition together.
+        </p>
+
+        <div class="question-card">
+          <div class="q-number">Question 1</div>
+          <h4>Topics</h4>
+          <p>What comes up most often in your conversations with family offices? What do they ask about, worry about, want to learn? This helps us identify the content categories that will resonate most.</p>
+        </div>
+
+        <div class="question-card">
+          <div class="q-number">Question 2</div>
+          <h4>Content Examples</h4>
+          <p>Draft 2-3 examples of what you think a compelling piece of content looks like. Don't worry about format. Just the substance. What would make someone say "I can't believe I got this"?</p>
+        </div>
+
+        <div class="question-card">
+          <div class="q-number">Question 3</div>
+          <h4>Pilot Group</h4>
+          <p>Who are 5 family offices you'd recruit as testers? What makes them good candidates? We need people who will give honest feedback and represent different segments of your community.</p>
+        </div>
+
+        <div class="question-card">
+          <div class="q-number">Question 4</div>
+          <h4>Boundaries</h4>
+          <p>Any topics that are absolutely off-limits, even anonymously? Understanding the red lines helps us design the consent and privacy model correctly from the start.</p>
+        </div>
+      </div>
+
+      <!-- WHAT'S NEXT -->
+      <div class="section" :class="{ active: active === 'next' }">
+        <div class="label">Path Forward</div>
+        <h2>What's Next</h2>
+        <p class="subtitle">
+          Three versions, each building on the last. Start small and manual.
+          Scale with technology once the content model is proven.
+        </p>
+
+        <div class="card" style="margin-bottom: 16px; border-left: 4px solid var(--accent);">
+          <div class="label" style="margin-bottom: 4px;">Version 1: Proof of Concept</div>
+          <h4>Does the content make people say "wow"?</h4>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary);">A single hand-crafted edition, sent to ~5 pilot family offices. One format for everyone. No personalization yet. You gather insights through conversations at events (starting with the March 10th DC event). The edition includes a provocation and one closing question to start the participation loop.</p>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary);"><strong>What you learn:</strong> Is the content genuinely valuable? What resonates? What falls flat? Would they forward it? Do they ask when the next one is coming?</p>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 0;"><strong>Effort:</strong> Low. You're already having these conversations. The new part is capturing insights with consent and assembling them into a structured format.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px; border-left: 4px solid #2563eb;">
+          <div class="label" style="margin-bottom: 4px; color: #2563eb;">Version 2: Engagement System</div>
+          <h4>Do people engage, contribute, and request connections?</h4>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary);">Personalized briefings based on reader profiles you create for each FO. Reaction buttons added (one-tap feedback on each section). Connection mechanism at the topic level. Readers can signal interest in discussing a topic with peers. Regular cadence established (monthly or biweekly).</p>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary);"><strong>What you learn:</strong> Are people clicking reactions? Are they requesting connections? Are they contributing back through the provocation? Is the flywheel starting to spin?</p>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 0;"><strong>Effort:</strong> Medium. Requires building the personalization and reaction infrastructure. Content creation is still largely manual but informed by V1 feedback.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 16px; border-left: 4px solid #059669;">
+          <div class="label" style="margin-bottom: 4px; color: #059669;">Version 3: The Full Product</div>
+          <h4>A self-sustaining intelligence network with a growing data moat.</h4>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary);">Quarterly physical Dossier with digital companion. Passive matchmaking from behavioral data. The system surfaces connection suggestions without readers lifting a finger. Full participation loop (provocation &rarr; responses &rarr; richer next edition). AI-assisted content drafting and personalization. Targeted surveys to gather data at scale.</p>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary);"><strong>What you've built:</strong> A product that gets better with every edition and every participant. Proprietary data that doesn't exist anywhere else. A flywheel that compounds trust, content quality, and connections simultaneously.</p>
+          <div class="spacer-sm"></div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 0;"><strong>Effort:</strong> Significant technology investment, but built on a proven content model and engaged audience from V1 and V2.</p>
+        </div>
+
+        <div class="spacer-md"></div>
+
+        <h3>Immediate Next Steps</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h4>You draft 2-3 content examples</h4>
+            <p>What does a compelling piece of intelligence look like? Don't worry about format. Just the substance.</p>
+          </div>
+          <div class="timeline-item">
+            <h4>We review and define the "wow"</h4>
+            <p>What makes someone say "I can't believe I got this"? Identify the content categories that matter most.</p>
+          </div>
+          <div class="timeline-item">
+            <h4>Design the interview framework</h4>
+            <p>Lightweight questions and consent script, ready to test at the March 10th DC event.</p>
+          </div>
+          <div class="timeline-item">
+            <h4>Produce first pilot edition</h4>
+            <p>Hand-crafted, exceptional. Quality over speed. The first one is the advertisement for the entire concept.</p>
+          </div>
+        </div>
+
+        <div class="spacer-lg"></div>
+
+        <div class="callout">
+          <p>Your network, your relationships, your judgment, amplified by data and AI. The first version is small and manageable. Each version builds on what's proven. Let's build something exceptional.</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

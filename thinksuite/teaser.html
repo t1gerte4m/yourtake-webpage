@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThinkSuite Intelligence - Teaser</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: letter;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      max-height: 11in;
+      overflow: hidden;
+      margin: 0 auto;
+      padding: 0.7in 0.8in 0.6in;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #1a1a1a;
+      margin-bottom: 28px;
+    }
+
+    .header-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .header-tag {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #999;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .hero-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #b8860b;
+      margin-bottom: 6px;
+    }
+
+    .hero h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      color: #1a1a1a;
+    }
+
+    .hero p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555;
+      max-width: 520px;
+    }
+
+    /* Callout */
+    .callout {
+      background: #f5f0e0;
+      border-left: 3px solid #b8860b;
+      padding: 14px 18px;
+      margin-bottom: 28px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .callout p {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.5;
+      color: #1a1a1a;
+      margin: 0;
+    }
+
+    /* Three columns */
+    .three-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .col-card {
+      padding: 16px;
+      border: 1px solid #e8e8e6;
+      border-radius: 8px;
+      background: #fafaf9;
+    }
+
+    .col-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f5f0e0;
+      color: #b8860b;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .col-card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #1a1a1a;
+    }
+
+    .col-card p {
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: #666;
+      margin: 0;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: #e8e8e6;
+      margin-bottom: 24px;
+    }
+
+    /* Sample insight */
+    .sample {
+      margin-bottom: 24px;
+    }
+
+    .sample-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #b8860b;
+      margin-bottom: 10px;
+    }
+
+    .sample-box {
+      border: 1px solid #e8e8e6;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .sample-row {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e8e8e6;
+    }
+
+    .sample-row:last-child {
+      border-bottom: none;
+    }
+
+    .sample-row-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 3px;
+    }
+
+    .sample-row-label.insight { color: #b8860b; }
+    .sample-row-label.matters { color: #2563eb; }
+    .sample-row-label.connect { color: #059669; }
+
+    .sample-row p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #444;
+      margin: 0;
+    }
+
+    .sample-row p strong {
+      color: #1a1a1a;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid #e8e8e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .footer-text strong {
+      color: #1a1a1a;
+    }
+
+    .footer-cta {
+      font-size: 12px;
+      font-weight: 600;
+      color: #b8860b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; }
+      .page {
+        width: 100%;
+        min-height: 100vh;
+        padding: 0.7in 0.8in 0.6in;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <div class="header">
+      <span class="header-title">ThinkSuite</span>
+      <span class="header-tag">Concept Brief / Confidential</span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-label">ThinkSuite Intelligence</div>
+      <h1>A Private Intelligence Network<br>for Family Offices</h1>
+      <p>A new product concept that turns ThinkSuite's trusted network into a scalable intelligence platform. Delivering rarefied insights, creating connections, and growing stronger with every edition.</p>
+    </div>
+
+    <div class="callout">
+      <p>You solve three problems for family offices: safe spaces to meet peers, finding the right one-on-one match, and exceptional curated content. Today, only the first two have products behind them. <strong>This concept fills the third, and amplifies the other two.</strong></p>
+    </div>
+
+    <div class="three-cols">
+      <div class="col-card">
+        <div class="col-number">1</div>
+        <h3>Intelligence</h3>
+        <p>Rarefied insights gathered directly from family offices in the network, shared anonymously, filtered and framed for each reader's world using AI. Data that doesn't exist anywhere else.</p>
+      </div>
+      <div class="col-card">
+        <div class="col-number">2</div>
+        <h3>Connection</h3>
+        <p>The content becomes a matchmaking engine. Readers signal interest in topics. ThinkSuite brokers introductions and small group discussions around shared interests the content reveals.</p>
+      </div>
+      <div class="col-card">
+        <div class="col-number">3</div>
+        <h3>Participation</h3>
+        <p>Each edition includes a provocation and a simple way to respond. Readers contribute back. The product gets richer with every edition and every participant.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sample">
+      <div class="sample-label">What an Insight Might Look Like</div>
+      <div class="sample-box">
+        <div class="sample-row">
+          <div class="sample-row-label insight">The Insight</div>
+          <p><strong>Family offices with next-generation involvement in investment decisions report 2.3x higher satisfaction with their governance structures.</strong></p>
+        </div>
+        <div class="sample-row">
+          <div class="sample-row-label matters">Why This Matters to You</div>
+          <p><em>Filtered and framed per reader.</em> A real estate family only sees insights relevant to their world, framed so they immediately understand why it matters and what to do about it. No translation required.</p>
+        </div>
+        <div class="sample-row">
+          <div class="sample-row-label connect">Connect</div>
+          <p>Interested in this topic? Signal interest and ThinkSuite will broker a small group discussion or one-on-one introduction with peers thinking about the same challenge.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">
+        <strong>Your network. Your trust. Your data.</strong><br>
+        We have a full concept ready to walk through together.
+      </div>
+      <div class="footer-cta">Let's discuss &rarr;</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
