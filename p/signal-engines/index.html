@@ -634,35 +634,166 @@
     .back-link:hover {
       color: var(--accent);
     }
+
+    /* Hamburger button */
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 200;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--accent);
+      cursor: pointer;
+      padding: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      box-shadow: var(--shadow-md);
+      transition: background 0.2s ease;
+    }
+
+    .hamburger:hover {
+      background: #0a6652;
+    }
+
+    .hamburger .bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger.open .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Backdrop */
+    .menu-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 90;
+    }
+
+    /* Table wrapper for mobile scroll */
+    .table-scroll-wrapper {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+
+      .menu-backdrop.open {
+        display: block;
+      }
+
+      .sidebar {
+        width: 280px;
+        min-width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 72px 16px 60px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      .card-grid.cols-2,
+      .card-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .pillar-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-row {
+        gap: 16px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+
+      .table-scroll-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table-scroll-wrapper .comp-table {
+        min-width: 500px;
+      }
+    }
   </style>
 </head>
-<body x-data="{ active: 'overview', ex: {} }" x-effect="active; $nextTick(() => window.scrollTo(0, 0))">
+<body x-data="{ active: 'overview', ex: {}, menuOpen: false }" x-effect="active; $nextTick(() => window.scrollTo(0, 0))">
+
+  <!-- Hamburger Menu Button -->
+  <button class="hamburger" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen" aria-label="Toggle menu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+
+  <!-- Menu Backdrop -->
+  <div class="menu-backdrop" :class="{ open: menuOpen }" @click="menuOpen = false"></div>
 
   <div class="layout">
     <!-- Sidebar -->
-    <nav class="sidebar">
+    <nav class="sidebar" :class="{ open: menuOpen }">
       <div class="sidebar-logo">
         <h1>Signal Engines</h1>
         <span>Venture Analysis</span>
       </div>
 
-      <button class="nav-item" :class="{ active: active === 'overview' }" @click="active = 'overview'">Overview</button>
-      <button class="nav-item" :class="{ active: active === 'pattern' }" @click="active = 'pattern'">The Pattern</button>
-      <button class="nav-item" :class="{ active: active === 'scoring' }" @click="active = 'scoring'">Scoring Model</button>
+      <button class="nav-item" :class="{ active: active === 'overview' }" @click="active = 'overview'; menuOpen = false">Overview</button>
+      <button class="nav-item" :class="{ active: active === 'pattern' }" @click="active = 'pattern'; menuOpen = false">The Pattern</button>
+      <button class="nav-item" :class="{ active: active === 'scoring' }" @click="active = 'scoring'; menuOpen = false">Scoring Model</button>
 
       <div class="nav-divider"></div>
 
       <span class="nav-label">Opportunities</span>
-      <button class="nav-item sub" :class="{ active: active === 'staffing' }" @click="active = 'staffing'">#1 Staffing Agencies <span class="nav-score">56</span></button>
-      <button class="nav-item sub" :class="{ active: active === 'hvac' }" @click="active = 'hvac'">#2 HVAC / Trades <span class="nav-score">55</span></button>
-      <button class="nav-item sub" :class="{ active: active === 'vet' }" @click="active = 'vet'">#3 Vet Practices <span class="nav-score">54</span></button>
-      <button class="nav-item sub" :class="{ active: active === 'cleaning' }" @click="active = 'cleaning'">#4 Commercial Cleaning <span class="nav-score">52</span></button>
-      <button class="nav-item sub" :class="{ active: active === 'auto' }" @click="active = 'auto'">#5 Auto Repair <span class="nav-score">52</span></button>
+      <button class="nav-item sub" :class="{ active: active === 'staffing' }" @click="active = 'staffing'; menuOpen = false">#1 Staffing Agencies <span class="nav-score">56</span></button>
+      <button class="nav-item sub" :class="{ active: active === 'hvac' }" @click="active = 'hvac'; menuOpen = false">#2 HVAC / Trades <span class="nav-score">55</span></button>
+      <button class="nav-item sub" :class="{ active: active === 'vet' }" @click="active = 'vet'; menuOpen = false">#3 Vet Practices <span class="nav-score">54</span></button>
+      <button class="nav-item sub" :class="{ active: active === 'cleaning' }" @click="active = 'cleaning'; menuOpen = false">#4 Commercial Cleaning <span class="nav-score">52</span></button>
+      <button class="nav-item sub" :class="{ active: active === 'auto' }" @click="active = 'auto'; menuOpen = false">#5 Auto Repair <span class="nav-score">52</span></button>
 
       <div class="nav-divider"></div>
 
-      <button class="nav-item" :class="{ active: active === 'portfolio' }" @click="active = 'portfolio'">The Portfolio</button>
-      <button class="nav-item" :class="{ active: active === 'landscape' }" @click="active = 'landscape'">Existing Landscape</button>
+      <button class="nav-item" :class="{ active: active === 'portfolio' }" @click="active = 'portfolio'; menuOpen = false">The Portfolio</button>
+      <button class="nav-item" :class="{ active: active === 'landscape' }" @click="active = 'landscape'; menuOpen = false">Existing Landscape</button>
     </nav>
 
     <!-- Content -->
@@ -986,6 +1117,7 @@
         <div class="spacer-md"></div>
 
         <h3>What Exists Today</h3>
+        <div class="table-scroll-wrapper">
         <table class="comp-table">
           <thead>
             <tr>
@@ -1022,6 +1154,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="spacer-sm"></div>
 
@@ -1099,6 +1232,7 @@
         <div class="spacer-md"></div>
 
         <h3>What Exists Today</h3>
+        <div class="table-scroll-wrapper">
         <table class="comp-table">
           <thead>
             <tr>
@@ -1135,6 +1269,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="spacer-sm"></div>
 
@@ -1211,6 +1346,7 @@
         <div class="spacer-md"></div>
 
         <h3>What Exists Today</h3>
+        <div class="table-scroll-wrapper">
         <table class="comp-table">
           <thead>
             <tr>
@@ -1247,6 +1383,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="spacer-sm"></div>
 
@@ -1328,6 +1465,7 @@
         <div class="spacer-md"></div>
 
         <h3>What Exists Today</h3>
+        <div class="table-scroll-wrapper">
         <table class="comp-table">
           <thead>
             <tr>
@@ -1359,6 +1497,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="spacer-sm"></div>
 
@@ -1422,6 +1561,7 @@
         <div class="spacer-md"></div>
 
         <h3>What Exists Today</h3>
+        <div class="table-scroll-wrapper">
         <table class="comp-table">
           <thead>
             <tr>
@@ -1458,6 +1598,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="spacer-sm"></div>
 
