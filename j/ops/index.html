@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Ops - Your Personal Assistant</title>
+  <meta property="og:title" content="Ops - Your Personal Assistant">
+  <meta property="og:description" content="Built for Anthony">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F5F3F0;
+      --text: #1B2A4A;
+      --text-secondary: #6B7280;
+      --accent: #D4943A;
+      --accent-hover: #B8792E;
+      --card-bg: #FFFFFF;
+      --card-shadow: rgba(27, 42, 74, 0.06);
+      --divider: #E5E2DD;
+      --cream: #FAF8F5;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ===== Sections ===== */
+    section {
+      padding: 80px 0;
+    }
+
+    section + section {
+      border-top: 1px solid var(--divider);
+    }
+
+    /* ===== Typography ===== */
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .muted {
+      color: var(--text-secondary);
+    }
+
+    .small {
+      font-size: 15px;
+    }
+
+    .label {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      text-align: center;
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .hero h1 {
+      margin-bottom: 24px;
+    }
+
+    .hero .subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ===== Cards ===== */
+    .card-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px var(--card-shadow);
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+
+    /* ===== Cream blocks (examples) ===== */
+    .example {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .example ul {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+    }
+
+    .example ul li {
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .example ul li::before {
+      content: '-';
+      position: absolute;
+      left: 0;
+      color: var(--text-secondary);
+    }
+
+    .example ol {
+      padding-left: 20px;
+      margin: 12px 0 0;
+    }
+
+    .example ol li {
+      padding: 4px 0;
+    }
+
+    .example .voice {
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .example .tap {
+      margin-top: 12px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* Small example cards (texts section) */
+    .example-small {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 12px 0;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .example-small .trigger {
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .example-small .response {
+      color: var(--text-secondary);
+    }
+
+    /* ===== Narrative text between examples ===== */
+    .narrative {
+      margin: 24px 0;
+    }
+
+    .narrative p {
+      color: var(--text);
+    }
+
+    /* ===== Steps ===== */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      min-width: 36px;
+      padding-top: 2px;
+    }
+
+    .step-body h3 {
+      margin-bottom: 4px;
+    }
+
+    .step-body p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+
+    .steps-note {
+      margin-top: 32px;
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Not list ===== */
+    .not-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .not-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--divider);
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .not-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* ===== CTA ===== */
+    .cta-section {
+      text-align: center;
+      padding: 100px 0;
+    }
+
+    .cta-section h2 {
+      margin-bottom: 16px;
+    }
+
+    .cta-section .cta-body {
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 56px;
+      padding: 0 24px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      width: 100%;
+      max-width: 320px;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      color: #FFFFFF;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cta-sig {
+      margin-top: 24px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center;
+      padding: 40px 0;
+      border-top: 1px solid var(--divider);
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Desktop ===== */
+    @media (min-width: 768px) {
+      section {
+        padding: 120px 0;
+      }
+
+      h1 {
+        font-size: 48px;
+      }
+
+      h2 {
+        font-size: 32px;
+      }
+
+      .hero {
+        padding: 160px 0 120px;
+      }
+
+      .card-stack {
+        flex-direction: row;
+        gap: 16px;
+      }
+
+      .card {
+        flex: 1;
+      }
+
+      .cta-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .btn {
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container">
+      <p class="label">Built for Anthony</p>
+      <h1>Meet Ops.<br>Your personal assistant that never drops the ball.</h1>
+      <p class="subtitle">Ops lives on your phone. It listens to your day, keeps track of every conversation and commitment across every project, and makes sure nothing falls through the cracks. So you can focus on the work only you can do.</p>
+    </div>
+  </section>
+
+  <!-- ===== The Problem ===== -->
+  <section>
+    <div class="container">
+      <h2>Sound familiar?</h2>
+      <p>You're running 5 projects across town. 30 texts a day from subs, clients, architects, suppliers.</p>
+      <p>You make a promise on a site visit and by the time you're in the truck, three more things have come in.</p>
+      <p>Your memory is your project management tool. Your truck is your office. And at the end of the day, you know something slipped. You're just not sure what.</p>
+      <p>You don't need another app. You need someone keeping track of it all so you don't have to.</p>
+    </div>
+  </section>
+
+  <!-- ===== What Ops Does ===== -->
+  <section>
+    <div class="container">
+      <h2 style="text-align: center;">One assistant. Three jobs.</h2>
+      <div class="card-stack">
+        <div class="card">
+          <h3>Captures everything</h3>
+          <p>Talk to Ops while you're driving. Brain dumps, reminders, follow-ups. It pulls out the tasks, the commitments, and the facts, and files them under the right project. You talk, it organizes.</p>
+        </div>
+        <div class="card">
+          <h3>Watches your messages and email</h3>
+          <p>Ops reads your texts and emails in the background. When a sub confirms a date, it notes it. When a client asks a question, it drafts a reply for you. When someone new texts you, it asks who they are and remembers.</p>
+        </div>
+        <div class="card">
+          <h3>Asks before it acts</h3>
+          <p>Ops never sends anything without your OK. It drafts the email, shows it to you, and you decide. Approve, edit, or skip. One tap. You stay in control.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== A Day With Ops ===== -->
+  <section>
+    <div class="container">
+      <h2>What a day looks like</h2>
+
+      <!-- Morning -->
+      <div class="narrative">
+        <p>7 AM. Your phone buzzes.</p>
+      </div>
+
+      <div class="example">
+        Good morning. Here's your day:
+        <ul>
+          <li>3 site visits: Oak St at 9, Henderson at 11, Smith at 2</li>
+          <li>Mike Torres confirmed drywall starting Monday at Oak St</li>
+          <li>Sarah from Henderson's office emailed about the bookshelf quote. I drafted a reply for you</li>
+          <li>2 open items need your attention</li>
+        </ul>
+      </div>
+
+      <div class="narrative">
+        <p>You open your dashboard, swipe through the items, approve the email to Sarah, skip the one that can wait. 60 seconds. Out the door.</p>
+      </div>
+
+      <!-- Driving -->
+      <div class="narrative" style="margin-top: 48px;">
+        <p>After the Oak St visit, you're back in the truck. You tap one button.</p>
+      </div>
+
+      <div class="example">
+        <p class="voice">"Hey Siri, brain dump."</p>
+        <p class="voice">"Henderson wants to change the master bath tile from subway to herringbone. Get me a number from the tile guy by Thursday. Also remind me to call the inspector about the Oak St rough-in. And tell Mike he can skip Friday. We're not ready for him."</p>
+      </div>
+
+      <div class="narrative">
+        <p>Within a minute:</p>
+      </div>
+
+      <div class="example">
+        3 items from your brain dump:
+        <ol>
+          <li>Task created: get tile quote for Henderson (due Thursday)</li>
+          <li>Task created: call inspector re: Oak St rough-in</li>
+          <li>Drafted a text to Mike Torres: "Hey Mike. Skip Friday at Oak St, we're not quite ready. I'll let you know when to come back."</li>
+        </ol>
+        <p class="tap">Tap to review and send.</p>
+      </div>
+
+      <div class="narrative">
+        <p>You tap, glance at the draft, hit send. Done. Back to driving.</p>
+      </div>
+
+      <!-- Texts -->
+      <div class="narrative" style="margin-top: 48px;">
+        <p>Texts keep coming in all day. Subs, clients, suppliers. You don't change anything about how you use your phone. Ops is reading everything in the background.</p>
+      </div>
+
+      <div class="example-small">
+        <p class="trigger">Sub confirms delivery date</p>
+        <p class="response">&#8594; Ops notes it, files it under the project. No action needed.</p>
+      </div>
+
+      <div class="example-small">
+        <p class="trigger">Client asks about cabinet ETA</p>
+        <p class="response">&#8594; Ops flags it: "Henderson asked about cabinets. Want me to reply? Here's a draft."</p>
+      </div>
+
+      <div class="example-small">
+        <p class="trigger">New number texts you</p>
+        <p class="response">&#8594; Ops asks: "Who is +1-609-555-1234? They said 'Running 15 late to the Smith meeting.'"</p>
+        <p class="response">You type: "Lisa Park, architect."</p>
+        <p class="response">Ops remembers her forever.</p>
+      </div>
+
+      <!-- End of day -->
+      <div class="narrative" style="margin-top: 48px;">
+        <p>6 PM. One more message.</p>
+      </div>
+
+      <div class="example">
+        Here's your day:
+        <ul>
+          <li>12 messages tracked, 3 needed your input</li>
+          <li>4 tasks created, 1 completed</li>
+          <li>Henderson tile quote still open (due Thursday)</li>
+          <li>Lisa Park added to your contacts (architect, Smith)</li>
+          <li>Tomorrow: Smith site 9am, no conflicts</li>
+        </ul>
+      </div>
+
+      <div class="narrative">
+        <p>Nothing fell through. Nothing forgotten. You didn't write a single thing down.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== How It Works ===== -->
+  <section>
+    <div class="container">
+      <h2>Setup takes 30 minutes</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-body">
+            <h3>We connect your phone</h3>
+            <p>I install two buttons on your home screen and turn on automatic text reading. You won't notice it running.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-body">
+            <h3>We connect your Google</h3>
+            <p>Gmail and Calendar. Ops reads your email and sees your schedule so it can spot conflicts and draft replies.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-body">
+            <h3>We load your world</h3>
+            <p>Your active projects, your key contacts. Subs, clients, architects. Ops knows who "Mike the framer" is from day one.</p>
+          </div>
+        </div>
+      </div>
+      <p class="steps-note">After that, you just use your phone the way you always do. Ops handles the rest.</p>
+    </div>
+  </section>
+
+  <!-- ===== What This Isn't ===== -->
+  <section>
+    <div class="container">
+      <h2>What this isn't</h2>
+      <ul class="not-list">
+        <li>Ops does not send anything without your approval. You're always in control.</li>
+        <li>Ops does not do estimating, invoicing, or bookkeeping.</li>
+        <li>Ops does not replace your project management tool. It's a personal assistant, not a PM app.</li>
+        <li>Ops does not listen to your phone calls. Only texts, emails, and what you dictate.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Let's make sure this fits.</h2>
+      <p class="cta-body">I built this around what you told me. But I want to make sure I got it right. Let's hop on a call, walk through the plan, and make sure this is exactly what you need.</p>
+      <div class="cta-buttons">
+        <a href="https://calendly.com/yourtake/30min" class="btn btn-primary">Schedule a 30-min call</a>
+        <a href="https://calendly.com/yourtake/45-min-chat" class="btn btn-secondary">Schedule a 45-min deep dive</a>
+      </div>
+      <p class="cta-sig">- Mike</p>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container">
+      Built by Mike &middot; yourtake.ai
+    </div>
+  </footer>
+
+</body>
+</html>
