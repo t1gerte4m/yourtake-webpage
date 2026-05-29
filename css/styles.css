@@ -402,6 +402,13 @@ section {
   position: relative;
 }
 
+/* 6-step variant (How It Works pages that include the Strategy step) */
+@media (min-width: 1025px) {
+  .steps--six {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
 .steps::before {
   content: '';
   position: absolute;
