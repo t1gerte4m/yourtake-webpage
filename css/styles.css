@@ -172,9 +172,7 @@ section {
   left: 0;
   right: 0;
   height: var(--nav-height);
-  background: var(--bg-nav);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-primary);
   z-index: 1000;
   border-bottom: 1px solid transparent;
   transition: border-color var(--transition), background var(--transition);
@@ -899,9 +897,7 @@ section {
     top: var(--nav-height);
     left: 0;
     right: 0;
-    background: var(--bg-nav);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--bg-primary);
     flex-direction: column;
     padding: 2rem 1.5rem;
     gap: 1.5rem;
@@ -986,4 +982,109 @@ section {
     padding: 0.75rem 1.75rem;
     font-size: 0.9375rem;
   }
+}
+
+/* ===== Reboot: larger, more readable body/list type ===== */
+.feature-list li {
+  font-size: 1.0625rem;
+}
+
+.benefit-card p {
+  font-size: 1rem;
+}
+
+.feature-tagline {
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+}
+
+/* ===== Reboot: scannable How It Works cards ===== */
+.card-lead {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.85rem;
+}
+
+.card-note {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin-top: 0.85rem;
+  line-height: 1.6;
+}
+
+.benefit-card .feature-list {
+  margin-bottom: 0;
+}
+
+/* ===== Reboot: platform logo row ===== */
+.logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.75rem;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.logo-row svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--text-secondary);
+  transition: fill var(--transition);
+}
+
+.logo-row svg:hover {
+  fill: var(--accent-primary);
+}
+
+/* ===== Reboot: ChatGPT vs YourTake comparison table ===== */
+.compare {
+  background: var(--bg-primary);
+}
+
+.compare-scroll {
+  overflow-x: auto;
+}
+
+.compare-table {
+  min-width: 640px;
+  max-width: 900px;
+  margin: 0 auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.compare-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+}
+
+.compare-row + .compare-row {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.compare-row > div {
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.compare-head > div {
+  background: var(--bg-card);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.compare-row .rowlabel {
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.compare-row .cg {
+  color: var(--text-secondary);
+}
+
+.compare-row .yt {
+  color: var(--text-primary);
+  background: rgba(162, 222, 204, 0.06);
 }
