@@ -64,3 +64,82 @@
   color: var(--text-muted);
   font-style: italic;
 }
+
+.privacy-content ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.privacy-content a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Table of contents */
+.policy-toc {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem 0.5rem;
+  margin: 2rem 0 1rem;
+}
+
+.policy-toc p {
+  margin-bottom: 0.5rem;
+}
+
+.policy-toc li {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Tables (sub-processors, retention, change log) */
+.policy-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.policy-table th,
+.policy-table td {
+  border: 1px solid var(--border-subtle);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.policy-table th {
+  color: var(--text-primary);
+  font-weight: 600;
+  background: var(--bg-card);
+}
+
+.privacy-content code {
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+/* Print: legal teams print these pages */
+@media print {
+  .nav, .footer { display: none; }
+  body { background: #fff; }
+  .privacy-content { padding-top: 0; max-width: none; }
+  .privacy-content, .privacy-content p, .privacy-content li,
+  .privacy-content h1, .privacy-content h2, .privacy-content h3,
+  .privacy-content strong, .policy-table th, .policy-table td {
+    color: #000;
+    font-size: 11pt;
+  }
+  .policy-toc, .policy-table th { background: none; }
+  .policy-table th, .policy-table td { border-color: #999; }
+  .privacy-content a { color: #000; }
+}
