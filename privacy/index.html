@@ -46,7 +46,7 @@
     <div class="privacy-content">
 
       <h1>Privacy Policy</h1>
-      <p class="privacy-meta"><strong>Effective Date:</strong> October 14, 2026 &nbsp;|&nbsp; <strong>Last Updated:</strong> October 14, 2026 &nbsp;|&nbsp; <strong>Version</strong> 2.0</p>
+      <p class="privacy-meta"><strong>Effective Date:</strong> November 7, 2026 &nbsp;|&nbsp; <strong>Last Updated:</strong> November 7, 2026 &nbsp;|&nbsp; <strong>Version</strong> 2.1</p>
 
       <p>YourTake LLC ("YourTake," "we," "us," or "our") respects your privacy. This Privacy Policy describes what information we collect, how we use it, who we share it with, and the rights you have over it when you use YourTake.</p>
       <p>Questions about this policy or your data? Contact us at <a href="mailto:privacy@yourtake.ai">privacy@yourtake.ai</a>.</p>
@@ -204,7 +204,7 @@
         <li><strong>Reading pages.</strong> The extension reads the content of the current page (or a YouTube transcript) only when you ask it to analyze that page.</li>
         <li><strong>Posting is manual.</strong> The extension copies your post and opens LinkedIn's composer; you decide whether to post. It does not publish for you.</li>
         <li><strong>Access codes.</strong> Feature access codes are checked on your device.</li>
-        <li><strong>Usage analytics.</strong> The extension sends usage events to Google Analytics 4 with a randomly generated ID. Events can include short labels such as a customer-segment name, a website domain you're working with, or an error message.</li>
+        <li><strong>Usage analytics.</strong> The extension records which features you use, for example "started a carousel" or "copied a post." It sends these usage events to Google Analytics 4 and to YourTake's server, which stores them in our database. Each event carries a randomly generated ID for your installation and, when your brand profile lists a website, that website's domain (for example, example.com), so we can see which features each brand uses. Usage events never include your content, your prompts, or the pages you read. Events sent to Google Analytics 4 can also include short labels such as a customer-segment name, a website domain you're working with, or an error message.</li>
         <li><strong>Deleting extension data.</strong> Removing the extension deletes its locally stored data. Removing the extension does not delete a voice clone; see Section 8.</li>
       </ul>
 
@@ -233,7 +233,7 @@
             <tr><td><a href="https://fly.io/legal/privacy-policy">Fly.io</a></td><td>Hosting for YourTake's server that forwards extension requests</td><td>Request content in transit, operational logs</td><td>Extension</td></tr>
             <tr><td><a href="https://policies.google.com/privacy">Google (Analytics 4, Forms)</a></td><td>Usage analytics and feedback forms</td><td>Random ID and usage events; feedback you submit</td><td>Extension</td></tr>
             <tr><td><a href="https://stripe.com/privacy">Stripe</a></td><td>Payments</td><td>Name, email, billing details, payment method</td><td>Web app, extension</td></tr>
-            <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Database, file storage, server functions</td><td>Data you store in the web app</td><td>Web app</td></tr>
+            <tr><td><a href="https://supabase.com/privacy">Supabase</a></td><td>Database, file storage, server functions; extension usage analytics</td><td>Data you store in the web app; extension usage events (random installation ID, brand website domain, features used)</td><td>Web app, extension</td></tr>
             <tr><td><a href="https://clerk.com/legal/privacy">Clerk</a></td><td>Sign-in and account management</td><td>Email, name, sign-in events</td><td>Web app</td></tr>
             <tr><td><a href="https://vercel.com/legal/privacy-policy">Vercel</a></td><td>Web app hosting</td><td>IP address, browser details, request logs</td><td>Web app</td></tr>
             <tr><td><a href="https://resend.com/legal/privacy-policy">Resend</a></td><td>Transactional email</td><td>Email address, email content</td><td>Web app</td></tr>
@@ -258,6 +258,7 @@
             <tr><td>Video render files</td><td>Processed by our video provider and kept under its retention policy</td></tr>
             <tr><td>Billing records</td><td>7 years, as required for US tax records</td></tr>
             <tr><td>Server and security logs</td><td>A limited period for security and debugging</td></tr>
+            <tr><td>Extension usage events</td><td>Up to 13 months</td></tr>
             <tr><td>Support emails and feedback</td><td>While you're a customer, plus 24 months</td></tr>
             <tr><td>Anonymized, aggregated statistics</td><td>Indefinitely (they can't be tied back to you)</td></tr>
           </tbody>
@@ -282,7 +283,7 @@
       <ul>
         <li><strong>Website (yourtake.ai):</strong> we do not set cookies or run analytics on this site. Pages load fonts from Google Fonts and a script library from a public CDN, which receive your IP address to deliver those files.</li>
         <li><strong>Web app:</strong> uses essential cookies to keep you signed in (Clerk) and authenticate requests (Supabase), Stripe cookies when you take a billing action, and PostHog analytics cookies. We ask for consent before setting non-essential analytics cookies where the law requires it.</li>
-        <li><strong>Extension:</strong> does not use cookies. It sends usage analytics with a random ID (Section 7).</li>
+        <li><strong>Extension:</strong> does not use cookies. It sends usage analytics with a random ID and your brand's website domain (Section 7).</li>
       </ul>
       <p>We do not use advertising cookies, advertising pixels, or session-replay tools. We do not currently respond to browser "Do Not Track" signals, because no consistent standard exists.</p>
 
@@ -334,6 +335,7 @@
         <table class="policy-table">
           <thead><tr><th>Date</th><th>Version</th><th>Summary</th></tr></thead>
           <tbody>
+            <tr><td>November 7, 2026</td><td>2.1</td><td>Extension usage events are also stored by YourTake (Supabase), identified by a random installation ID and the brand's website domain, kept up to 13 months.</td></tr>
             <tr><td>October 14, 2026</td><td>2.0</td><td>Full rewrite. Covers the web app, the current Chrome extension, LinkedIn data and integration, voice cloning, and all current providers. Names YourTake LLC as data controller.</td></tr>
             <tr><td>August 18, 2025</td><td>1.0</td><td>Original Chrome extension policy.</td></tr>
           </tbody>
